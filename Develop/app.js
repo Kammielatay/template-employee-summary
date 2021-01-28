@@ -1,6 +1,8 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const initial_questions = require('./utils/initial_questions');
+const new_member_questions = require('./utils/new_member_questions')
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -10,60 +12,45 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-inquirer
-    .prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'What is your name?',
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: 'What is your id',
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: 'What is your email?',
-        },
-        {
-            type: 'list',
-            name: 'employee_type',
-            message: 'What type of employee are you?',
-            choices: ['Manager', 'Engineer', 'Intern'],
-        },
-        {
-            name: "office_number",
-            type: "number",
-            message: "What is your office number?",
-            when: (answers) => answers.employee_type === 'Manager',
-        },
-        {
-            name: "github_username",
-            type: "input",
-            message: "What is your GitHub username?",
-            when: (answers) => answers.employee_type === 'Engineer',
-        },
-        {
-            name: "school",
-            type: "input",
-            message: "What school do you attend?",
-            when: (answers) => answers.employee_type === 'Intern',
-        },
+let staffMembers = []
 
-    ])
-    .then((data) => {
+console.log('Lets get ready to build your staff...')
+
+function init(){
+    inquirer.prompt(initial_questions).then((data) => {
         
+        if (data.employee_type === 'Manager') {
+            let newManager = new Manager(data.name, data.id, data.email, data.office_number);
+            staffMembers.push(newManager);
+        } else if (data.employee_type === 'Engineer') {
+            let newEngineer = new Engineer(data.name, data.id, data.email, data.github_username);
+            staffMembers.push(newEngineer)
+        } else if (data.employee_type === 'Intern') {
+            let newIntern = new Intern(data.name, data.id, data.email, data.school);
+            staffMembers.push(newIntern)
+        }
 
-        // fs.writeFile('team.html', (err) =>
-        //     err ? console.log(err) : console.log('Success!')
-        // );
+    createNewMember()
+
     })
+}
+
+function createNewMember() {
+    inquirer.prompt(new_member_questions).then((data) =>{
+        let response = data.new_member.toLowerCase()
+        if (response === "yes"){
+            return init();
+        } else if (response === 'no') {
+            console.log(staffMembers)
+        }
+    })
+}
+
+init()
+
+
 
 // TO do list:    
-
-// create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
