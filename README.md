@@ -36,7 +36,7 @@ It also assisted in developing my understanding of OOP constructors and prototyp
 
 In this application, the program will prompt the user for the name of the team member, employee id, and email. If the user is inputing information regarding a manager member, it will prompt the user for the managers office number. If the user is input information regarding a team member that is an engineer, it will prompt them for that team members GitHub username. If the user is inputing information regarding an Intern of the company, it will prompt them for the school that the entire is attended. 
 
-![image-of-outcome](assets/images/my-staff-members.png)
+![image-of-outcome](https://github.com/Kammielatay/template-employee-summary/blob/main/Assets/images/my-staff-members.png)
 
 Clicking on the email will allow you to send an email to that member and clicking on their GitHub username will take you to the GitHub profile.
 
